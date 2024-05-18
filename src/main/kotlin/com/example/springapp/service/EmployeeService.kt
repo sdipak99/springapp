@@ -18,4 +18,6 @@ class EmployeeService {
         }
     }
 
+    fun getAllEmployees():List<Employee> = empList
+
 }

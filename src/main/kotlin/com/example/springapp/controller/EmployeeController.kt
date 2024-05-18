@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
-class EmployeeController(private val service: UserDetailsService) {
+class EmployeeController(
+    private val service: UserDetailsService,
+    private val employeeService: EmployeeService) {
 
     @ExceptionHandler(UsernameNotFoundException::class)
     fun handleNotFound(e:NoSuchElementException):ResponseEntity<String> {
@@ -27,6 +29,14 @@ class EmployeeController(private val service: UserDetailsService) {
                 EmployeeTransferDTO(it as Employee)
             }
             return ResponseEntity.ok(data)
+    }
+
+    @GetMapping("/allemployees")
+    fun getAllEmployees():ResponseEntity<List<EmployeeTransferDTO>>{
+        val employeeList = employeeService.getAllEmployees()
+        return ResponseEntity.ok( employeeList.map {
+            EmployeeTransferDTO(it)
+        })
     }
 
 
