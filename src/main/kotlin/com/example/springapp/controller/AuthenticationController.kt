@@ -20,6 +20,12 @@ class AuthenticationController(
 
     @PostMapping("/authenticate")
     fun authenticate (@RequestBody requestBody:AuthenticationRequest ):ResponseEntity<AuthenticationResponse>{
+        authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                requestBody.userName,
+                requestBody.password
+            ))
+
         var user = employeeService.getEmployee(requestBody.userName)
         var jwtToken = jwtService.generateJwt(user)
         return ResponseEntity.ok(AuthenticationResponse(jwtToken))
